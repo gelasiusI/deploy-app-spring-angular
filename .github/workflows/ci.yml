@@ -1,29 +1,6 @@
-name: CI Pipeline
-
-on:
-  push:
-    branches: [ main ]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-          cache: 'maven'
-
-      # STEP 1: Build the JAR (This fixes the "not found" error)
-      - name: Build with Maven
-        run: ./mvnw clean package -DskipTests
-        working-directory: springboot/app
-
-      # STEP 2: Build the Docker Image
       - name: Build Docker Image
-        run: docker build -t yassine/springboot-app -f springboot/app/Dockerfile .
+        run: |
+          docker build -t yassine/springboot-app \
+          --build-arg JAR_FILE=springboot/app/target/*.jar \
+          -f springboot/app/Dockerfile .
+
