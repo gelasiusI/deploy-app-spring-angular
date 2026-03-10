@@ -29,6 +29,7 @@ jobs:
     - name: Build JAR with Maven
       run: |
         cd springboot/app
+        chmod +x mvnw
         ./mvnw clean package -DskipTests
 
     - name: Build Backend Image
